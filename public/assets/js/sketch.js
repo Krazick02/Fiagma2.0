@@ -449,8 +449,9 @@ document.getElementById('guardarLienzo').addEventListener('click', function () {
   })
     .then(function (response) {
       // Maneja la respuesta exitosa si es necesario
-      alert('Guardado con exito');
-      console.log(response.data);
+      // alert('Guardado con exito');
+      window.location.href = '/home'
+      // console.log(response.data);
     })
     .catch(function (error) {
       // Maneja el error si ocurre algún problema

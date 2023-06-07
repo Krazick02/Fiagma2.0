@@ -35,6 +35,7 @@ Route::get('/edit/{id}',[CanvaController::class,'edit'])->name('canva.edit');
 Route::get('/get/{id}',[CanvaController::class,'get_lienzo'])->name('canva.get_lienzo');
 Route::get('/register',[UserController::class,'create'])->name('users.create');
 Route::post('/register',[UserController::class,'store'])->name('users.store');
+Route::delete('/drop/{id}',[CanvaController::class,'destroy'])->name('canva.drop');
 
 
 Route::get('/', function () {

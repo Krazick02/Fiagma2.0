@@ -161,6 +161,7 @@ function mouseDragged() {
     x2 = mouseX;
     y2 = mouseY;
   }
+  
   if (figuraActual && isDraggingEnabled) {
     var dx = mouseX - startX;
     var dy = mouseY - startY;
@@ -425,11 +426,11 @@ function disableDragging() {
   isDraggingEnabled = false;
 }
 
-document.addEventListener('click', (e) => {
-  if (figuraActual) {
-    console.log(figuraActual)
-  }
-})
+// document.addEventListener('click', (e) => {
+//   if (figuraActual) {
+//     console.log(figuraActual)
+//   }
+// })
 
 
 
@@ -441,14 +442,14 @@ var csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
 document.getElementById('actualizarLienzo').addEventListener('click', function () {
   axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
-
+  // console.table(objectsStack)
   axios.put('/save', { 
     figures: objectsStack,
     idProyecto: document.getElementById('idProyecto').value 
   })
     .then(response => {
       alert('Guardado correctamente');
-      console.log(response.data);
+      // console.log(response.data.data.figures);
     })
     .catch(error => {
       alert('salio algo mal :c');
@@ -460,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
   axios.get(`/get/${document.getElementById('idProyecto').value}`)
     .then(function (response) {
       var arreglo = response.data.figures
-      console.log(arreglo)
+      // console.log(arreglo)
       arreglo.forEach(figura => {
         if (figura.type === 'square') {
           objectsStack.push(setSquare(
@@ -472,19 +473,20 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
           if (figura.type === 'circle') {
             objectsStack.push(setCircle(
-              figura.x,
-              figura.y,
+              figura.x-(figura.h*.5),
+              figura.y-(figura.w*.5),
               figura.h,
               figura.w,
               figura.color));
           } else {
             if (figura.type === 'line') {
               objectsStack.push(setLine(
-                figura.x,
-                figura.y,
-                figura.h,
-                figura.w,
+                figura.x1,
+                figura.y1,
+                figura.x2,
+                figura.y2,
                 figura.color));
+                // console.log(figura)
             }
           }
         }

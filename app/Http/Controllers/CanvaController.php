@@ -76,11 +76,11 @@ class CanvaController extends Controller
         $request['figures'] = json_encode($request->input('figures'));
         if ($canva->update($request->all())) {
 
-        return response()->json([
-            'message' => "Registro actualizado correctamente",
-            'code' => 2,
-            'data' => $canva
-        ], 200);
+            return response()->json([
+                'message' => "Registro actualizado correctamente",
+                'code' => 2,
+                'data' => $canva
+            ], 200);
         }
 
         return response()->json([
@@ -88,24 +88,19 @@ class CanvaController extends Controller
             'code' => -2,
             'data' => null
         ], 404);
-        // $figuras = $request->input('figuras');
-        // $idProyecto = ;
-
-        // Realizar las operaciones necesarias con los datos recibidos
-
-        // Retornar la respuesta
-        // return response()->json([
-        //     'message' => 'Datos recibidos correctamente',
-        //     'figuras' => $figuras,
-        //     'id' => $idProyecto
-        // ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Canva $canva)
+    public function destroy($id)
     {
-        //
+        $canva = Canva::find($id);
+
+        if ($canva) {
+            if ($canva->delete()) {
+                return back()->with('success','Eliminado correctamente');
+            }
+        }
     }
 }
