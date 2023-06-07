@@ -37,8 +37,8 @@ function setup() {
   circulo = select('#circulo');
   texto = select('#texto');
   dragButton = select('#dragFigure');
-  
-  
+
+
   var canvas = createCanvas(contenedor.width, contenedor.height);
   canvas.parent('canvas');
 
@@ -46,7 +46,7 @@ function setup() {
   colorLabel = select('#colorLabel');
 
   colorInput.input(updateColor);
-  
+
   linea.mousePressed(handleLinePress);
   cuadrado.mousePressed(handleCuadradoPress);
   circulo.mousePressed(handleCirclePress);
@@ -57,51 +57,60 @@ function setup() {
   select('#y').input(updateCuadrado);
   select('#w').input(updateCuadrado);
   select('#h').input(updateCuadrado);
-  select('#color').input(updateCuadrado);
 
   select('#x').input(updateCirculo);
   select('#y').input(updateCirculo);
   select('#w').input(updateCirculo);
   select('#h').input(updateCirculo);
-  select('#color').input(updateCirculo);
+
+  select('#x').input(updateLine);
+  select('#y').input(updateLine);
+  select('#w').input(updateLine);
+  select('#h').input(updateLine);
+
+  if (figuraActual) {
+    select('#color').input(updateCirculo);
+    select('#color').input(updateCuadrado);
+    select('#color').input(updateLine);
+  }
 }
 
 function updateColor() {
   var selectedColor = colorInput.value();
   colorLabel.html(selectedColor);
-  if (cuadradoActual && circleActual) {
+  if (cuadradoActual) {
     cuadradoActual.color = colorInput.value();
+  }
+  if (circuloActual) {
     circuloActual.color = colorInput.value();
   }
 }
 
-//cuadrado
 function handleCuadradoPress() {
   disableDragging()
   select('#x').value(null);
-      select('#y').value(null);
-      select('#w').value(null);
-      select('#h').value(null);
-      // select('#color').value(null);
+  select('#y').value(null);
+  select('#w').value(null);
+  select('#h').value(null);
+  select('#color').value('#000000');
   isSquareButtonPressed = true;
 }
-//circulo
 function handleCirclePress() {
   disableDragging()
   select('#x').value(null);
-      select('#y').value(null);
-      select('#w').value(null);
-      select('#h').value(null);
-      // select('#color').value(null);
+  select('#y').value(null);
+  select('#w').value(null);
+  select('#h').value(null);
+  select('#color').value('#000000');
   isCircleButtonPressed = true;
 }
 
-//linea
 function handleLinePress() {
   disableDragging();
   select('#x').value(null);
   select('#y').value(null);
   select('#w').value(null);
+  select('#color').value('#000000');
   select('#h').value(null);
   isLineButtonPressed = true;
 }
@@ -165,30 +174,27 @@ function mouseDragged() {
 }
 
 function mouseReleased() {
-  //cuadrado
   if (isSquareButtonPressed && isDrawing) {
     isDrawing = false;
     isSquareButtonPressed = false;
 
     var newObj = setSquare(x1, y1, x2 - x1, y2 - y1, colorInput.value());
     objectsStack.push(newObj);
-    
-    // Establecer el cuadrado actual como el nuevo objeto
+
     cuadradoActual = newObj;
   }
-  //circulo
   if (isCircleButtonPressed && isDrawing) {
     isDrawing = false;
     isCircleButtonPressed = false;
     var newObj1 = setCircle(x1, y1, x2 - x1, y2 - y1, colorInput.value());
     objectsStack.push(newObj1);
-    // Establecer el cuadrado actual como el nuevo objeto
     circuloActual = newObj1;
+
   }
   if (isLineButtonPressed && isDrawing) {
     isDrawing = false;
     isLineButtonPressed = false;
-  
+
     var newLine = setLine(x1, y1, x2, y2, colorInput.value());
     objectsStack.push(newLine);
     lineaActual = newLine;
@@ -199,7 +205,6 @@ function mouseReleased() {
 
   figuraActual = null;
 }
-//cuadrado
 function setSquare(x, y, h, w, colorC) {
   var cuadrado = {
     x: x,
@@ -208,7 +213,11 @@ function setSquare(x, y, h, w, colorC) {
     w: w,
     color: colorC,
     draw: function () {
-      fill(colorC);
+      if (this.color != '#000000') {
+        fill(this.color);
+      } else {
+        noFill()
+      }
       stroke(0);
       rect(this.x, this.y, this.h, this.w);
     },
@@ -220,7 +229,6 @@ function setSquare(x, y, h, w, colorC) {
         mouseY >= this.y &&
         mouseY <= this.y + this.w
       ) {
-        console.log(`me presionaron  ${this.color}`);
         return true;
       }
       return false;
@@ -230,31 +238,31 @@ function setSquare(x, y, h, w, colorC) {
   select("#lista").child(liElement);
   return cuadrado;
 }
-//circulo
 function setCircle(x, y, h, w, colorC) {
   var circulo = {
-    x: x+(h*.5),
-    y: y+(w*.5),
+    x: x + (h * .5),
+    y: y + (w * .5),
     h: h,
     w: w,
     color: colorC,
     draw: function () {
-      fill(colorC);
+      if (this.color != '#000000') {
+        fill(this.color);
+      } else {
+        noFill()
+      }
       stroke(0);
       ellipse(this.x, this.y, this.h, this.w);
     },
 
     checkClick: function () {
       if (
-        mouseX >= this.x-(this.h*.5) &&
-        mouseX <= this.x + (this.h*.5)&&
-        mouseY >= this.y-(this.w*.5) &&
-        mouseY <= this.y +  (this.w*.5)
+        mouseX >= this.x - (this.h * .5) &&
+        mouseX <= this.x + (this.h * .5) &&
+        mouseY >= this.y - (this.w * .5) &&
+        mouseY <= this.y + (this.w * .5)
       ) {
-        console.log(`me presionaron circulo  ${mouseX},${mouseY},,,,${this.x},${this.y}`);
         return true;
-      }else{
-        console.log(`no me presionaron circulo  ${mouseX},${mouseY}`);
       }
       return false;
     }
@@ -271,13 +279,20 @@ function setLine(x1, y1, x2, y2, colorC) {
     x2: x2,
     y2: y2,
     color: colorC,
-    draw: function() {
+    draw: function () {
       stroke(colorC);
       line(this.x1, this.y1, this.x2, this.y2);
     },
-    checkClick: function() {
-      // Implementa la lógica para verificar si se hizo clic en la línea
-      // Puedes omitir esto si no se requiere interacción con las líneas
+    checkClick: function () {
+      if (
+        mouseX >= this.x &&
+        mouseX <= this.x + this.h &&
+        mouseY >= this.y &&
+        mouseY <= this.y + this.w
+      ) {
+        return true;
+      }
+      return false;
     }
   };
 
@@ -289,14 +304,12 @@ function setLine(x1, y1, x2, y2, colorC) {
 
 function updateCuadrado() {
   if (cuadradoActual) {
-    // Obtener los valores de los inputs
     var newX = parseInt(select('#x').value());
     var newY = parseInt(select('#y').value());
     var newW = parseInt(select('#w').value());
     var newH = parseInt(select('#h').value());
     var newColor = select('#color').value();
 
-    // Actualizar los atributos del cuadrado actual
     cuadradoActual.x = newX;
     cuadradoActual.y = newY;
     cuadradoActual.w = newW;
@@ -307,19 +320,32 @@ function updateCuadrado() {
 
 function updateCirculo() {
   if (circuloActual) {
-    // Obtener los valores de los inputs
     var newX = parseInt(select('#x').value());
     var newY = parseInt(select('#y').value());
     var newW = parseInt(select('#w').value());
     var newH = parseInt(select('#h').value());
     var newColor = select('#color').value();
 
-    // Actualizar los atributos del cuadrado actual
     circuloActual.x = newX;
     circuloActual.y = newY;
     circuloActual.w = newW;
     circuloActual.h = newH;
     circuloActual.color = newColor;
+  }
+}
+function updateLine() {
+  if (lineaActual) {
+    var newX = parseInt(select('#x').value());
+    var newY = parseInt(select('#y').value());
+    var newW = parseInt(select('#w').value());
+    var newH = parseInt(select('#h').value());
+    var newColor = select('#color').value();
+
+    lineaActual.x1 = newX;
+    lineaActual.y1 = newY;
+    lineaActual.y2 = newW;
+    lineaActual.x2 = newH;
+    lineaActual.color = newColor;
   }
 }
 
@@ -334,16 +360,15 @@ function draw() {
     noFill();
     stroke(0);
     rect(x1, y1, x2 - x1, y2 - y1);
-  }else{
+  } else {
     if (isDrawing && isCircleButtonPressed) {
       noFill();
       stroke(0);
-      ellipse(x1+((x2 - x1)*.5), y1+((y2 - y1)*.5), x2 - x1, y2 - y1);
-    }else{
+      ellipse(x1 + ((x2 - x1) * .5), y1 + ((y2 - y1) * .5), x2 - x1, y2 - y1);
+    } else {
       if (isDrawing && isLineButtonPressed) {
-        // noFill();
         stroke(0);
-        line(x1,y1, x2, y2);
+        line(x1, y1, x2, y2);
       }
     }
   }
@@ -373,12 +398,14 @@ function mousePressed() {
       select('#w').value(cuadrado.w);
       select('#h').value(cuadrado.h);
       select('#color').value(cuadrado.color);
+      colorLabel.html(cuadrado.color);
 
       select('#x').value(circulo.x);
       select('#y').value(circulo.y);
       select('#w').value(circulo.w);
       select('#h').value(circulo.h);
       select('#color').value(circulo.color);
+      colorLabel.html(circulo.color);
 
       break;
     }
@@ -391,3 +418,9 @@ function createLiElement(text) {
 function disableDragging() {
   isDraggingEnabled = false;
 }
+
+document.addEventListener('click', (e) => {
+  if (figuraActual) {
+    console.log(figuraActual)
+  }
+})
