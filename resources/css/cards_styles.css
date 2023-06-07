@@ -1,0 +1,36 @@
+.card-group {
+    margin-top: 50px;
+    display: flex;
+}
+
+.card {
+    width: 18rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 30px;
+
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-body .btn {
+    margin-top: 10px;
+    background-color: rgba(255, 79, 91, 1);
+    color: #ffffff;
+    font-size: 16px;
+    padding: 8px 16px;
+    width: 268px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 13px;
+    border: none;
+}
