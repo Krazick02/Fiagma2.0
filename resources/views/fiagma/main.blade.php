@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
@@ -31,10 +32,10 @@
                     <li class="nav-item">
                         <button id="dragFigure" class="nav-link active" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white"
-                            class="bi bi-cursor" viewBox="0 0 16 16">
-                            <path
-                                d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z" />
-                        </svg>
+                                class="bi bi-cursor" viewBox="0 0 16 16">
+                                <path
+                                    d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z" />
+                            </svg>
                         </button>
                     </li>
                     <li class="nav-item">
@@ -69,13 +70,23 @@
                             </svg>
                         </button>
                     </li>
+                    <li class="nav-item">
+
+                        <button id="guardarLienzo" class="nav-link active" aria-current="page" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" fill="white"
+                                class="bi bi-fonts" viewBox="0 0 16 16">
+                                <path
+                                    d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479L12.258 3z" />
+                            </svg>
+                        </button>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-nav-right">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
-                                class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
+                                fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                                 <path fill-rule="evenodd"
                                     d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
@@ -139,6 +150,7 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">

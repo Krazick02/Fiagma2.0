@@ -212,6 +212,7 @@ function setSquare(x, y, h, w, colorC) {
     h: h,
     w: w,
     color: colorC,
+    type:'square',
     draw: function () {
       if (this.color != '#000000') {
         fill(this.color);
@@ -245,6 +246,7 @@ function setCircle(x, y, h, w, colorC) {
     h: h,
     w: w,
     color: colorC,
+    type:'circle',
     draw: function () {
       if (this.color != '#000000') {
         fill(this.color);
@@ -279,6 +281,7 @@ function setLine(x1, y1, x2, y2, colorC) {
     x2: x2,
     y2: y2,
     color: colorC,
+    type:'line',
     draw: function () {
       stroke(colorC);
       line(this.x1, this.y1, this.x2, this.y2);
@@ -424,3 +427,29 @@ document.addEventListener('click', (e) => {
     console.log(figuraActual)
   }
 })
+
+
+
+
+
+
+//MANDAR AL BACKKK
+var csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+
+document.getElementById('guardarLienzo').addEventListener('click', function () {
+  // Configura el token CSRF en el encabezado de la solicitud
+  axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+
+  // Realiza la solicitud POST a la ruta 'lienzo.store'
+  axios.post('/save', {
+    figuras: objectsStack
+  })
+    .then(function (response) {
+      // Maneja la respuesta exitosa si es necesario
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      // Maneja el error si ocurre algún problema
+      console.log(error);
+    });
+});

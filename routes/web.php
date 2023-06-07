@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CanvaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -24,6 +25,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/main', function (){
         return view('fiagma.main');
     })->name('fiagma.main');
+    Route::post('/save',[CanvaController::class,'store'])->name('canva.store');
+
+
 });
 Route::get('/register',[UserController::class,'create'])->name('users.create');
 Route::post('/register',[UserController::class,'store'])->name('users.store');
