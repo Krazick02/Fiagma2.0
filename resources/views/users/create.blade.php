@@ -53,7 +53,7 @@
                                 <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
                             </svg></span>
                         <input type="password" class="form-control" id="password" name="password"
-                            style="font-size:20px;" placeholder="password" aria-describedby="addon-wrapping">
+                            style="font-size:20px;" placeholder="password" aria-describedby="addon-wrapping" required>
                     </div>
                 </div>
                 <div class="mt-5">
@@ -66,11 +66,11 @@
                             </svg></span>
                         <input type="password" class="form-control" style="font-size:20px;"
                             placeholder="Confirm password" id="passwordConfirm" name="passwordConfirm"
-                            aria-describedby="addon-wrapping">
+                            aria-describedby="addon-wrapping" required>
                     </div>
                 </div>
                 <div class="mt-5 d-flex justify-content-center">
-                    <button type="submit"
+                    <button id="btnSend" type="submit"
                         class="d-flex btn rounded-5 text-white align-items-center justify-content-center"
                         style="background-color:#1B2E35; width: 300px; height: 60px;box-shadow: 23px 23px 13px 1px rgba(0, 0, 0, 0.2);">Registrarse</button>
                 </div>
@@ -105,4 +105,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
+    <script src="{{asset('assets/js/validacion.js')}}"></script>
 </body>
