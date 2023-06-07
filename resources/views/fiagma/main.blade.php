@@ -29,6 +29,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
+                        <button id="dragFigure" class="nav-link active" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white"
+                            class="bi bi-cursor" viewBox="0 0 16 16">
+                            <path
+                                d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z" />
+                        </svg>
+                        </button>
+                    </li>
+                    <li class="nav-item">
                         <button id="cuadrado" class="nav-link active" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white"
                                 class="bi bi-square" viewBox="0 0 16 16">
@@ -134,7 +143,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
-    <script src="{{asset('assets/js/sketch.js')}}"></script>
+    <script src="{{ asset('assets/js/sketch.js') }}"></script>
 </body>
 
 </html>

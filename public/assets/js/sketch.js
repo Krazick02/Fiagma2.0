@@ -5,16 +5,29 @@ var x1, y1, x2, y2;
 var isDrawing = false;
 var isSquareButtonPressed = false;
 var isCircleButtonPressed = false;
+var figuraActual;
+
+var startX;
+var startY;
+
 
 let contenedor;
 let cuadrado;
 let linea;
 let circulo;
 let texto;
+let dragButton;
 
-// Atributos del cuadrado
 var cuadradoActual;
 var circuloActual;
+var lineaActual;
+
+var isDraggingEnabled = false;
+
+
+function enableDragging() {
+  isDraggingEnabled = true;
+}
 
 function setup() {
   contenedor = select('#canvas');
@@ -22,6 +35,8 @@ function setup() {
   linea = select('#linea');
   circulo = select('#circulo');
   texto = select('#texto');
+  dragButton = select('#dragFigure');
+  
   
   var canvas = createCanvas(contenedor.width, contenedor.height);
   canvas.parent('canvas');
@@ -30,12 +45,13 @@ function setup() {
   colorLabel = select('#colorLabel');
 
   colorInput.input(updateColor);
-
+  
+  linea.mousePressed(handleLinePress);
   cuadrado.mousePressed(handleCuadradoPress);
   circulo.mousePressed(handleCirclePress);
   contenedor.mousePressed(handleCanvasPress);
+  dragButton.mousePressed(enableDragging);
 
-  // Eventos de escucha para los inputs
   select('#x').input(updateCuadrado);
   select('#y').input(updateCuadrado);
   select('#w').input(updateCuadrado);
@@ -53,7 +69,6 @@ function updateColor() {
   var selectedColor = colorInput.value();
   colorLabel.html(selectedColor);
   if (cuadradoActual && circleActual) {
-    // Actualizar el atributo de color del cuadrado actual
     cuadradoActual.color = colorInput.value();
     circuloActual.color = colorInput.value();
   }
@@ -61,21 +76,34 @@ function updateColor() {
 
 //cuadrado
 function handleCuadradoPress() {
+  disableDragging()
   select('#x').value(null);
       select('#y').value(null);
       select('#w').value(null);
       select('#h').value(null);
-      select('#color').value(null);
+      // select('#color').value(null);
   isSquareButtonPressed = true;
 }
 //circulo
 function handleCirclePress() {
+  disableDragging()
   select('#x').value(null);
       select('#y').value(null);
       select('#w').value(null);
       select('#h').value(null);
-      select('#color').value(null);
+      // select('#color').value(null);
   isCircleButtonPressed = true;
+}
+
+//linea
+function handleLinePress() {
+  disableDragging();
+  select('#x').value(null);
+  select('#y').value(null);
+  select('#w').value(null);
+  select('#h').value(null);
+  isLineButtonPressed = true;
+
 }
 
 function handleCanvasPress() {
@@ -89,6 +117,23 @@ function handleCanvasPress() {
     y1 = mouseY;
     isDrawing = true;
   }
+  if (isLineButtonPressed) {
+    x1 = mouseX;
+    y1 = mouseY;
+    isDrawing = true;
+  }
+  if (isDraggingEnabled) {
+    for (var i = objectsStack.length - 1; i >= 0; i--) {
+      if (objectsStack[i].checkClick()) {
+        figuraActual = objectsStack[i];
+        startX = mouseX;
+        startY = mouseY;
+        select('#x').value(figuraActual.x);
+        select('#y').value(figuraActual.y);
+        break;
+      }
+    }
+  }
 }
 
 function mouseDragged() {
@@ -99,6 +144,23 @@ function mouseDragged() {
   if (isCircleButtonPressed && isDrawing) {
     x2 = mouseX;
     y2 = mouseY;
+  }
+  if (isLineButtonPressed && isDrawing) {
+    x2 = mouseX;
+    y2 = mouseY;
+  }
+  if (figuraActual && isDraggingEnabled) {
+    var dx = mouseX - startX;
+    var dy = mouseY - startY;
+
+    figuraActual.x += dx;
+    figuraActual.y += dy;
+
+    startX = mouseX;
+    startY = mouseY;
+
+    select('#x').value(figuraActual.x);
+    select('#y').value(figuraActual.y);
   }
 }
 
@@ -123,6 +185,19 @@ function mouseReleased() {
     // Establecer el cuadrado actual como el nuevo objeto
     circuloActual = newObj1;
   }
+  if (isLineButtonPressed && isDrawing) {
+    isDrawing = false;
+    isLineButtonPressed = false;
+  
+    var newLine = setLine(x1, y1, x2, y2, colorInput.value());
+    objectsStack.push(newLine);
+    lineaActual = newLine;
+
+  }
+  startX = null;
+  startY = null;
+
+  figuraActual = null;
 }
 //cuadrado
 function setSquare(x, y, h, w, colorC) {
@@ -158,8 +233,8 @@ function setSquare(x, y, h, w, colorC) {
 //circulo
 function setCircle(x, y, h, w, colorC) {
   var circulo = {
-    x: x,
-    y: y,
+    x: x+(h*.5),
+    y: y+(w*.5),
     h: h,
     w: w,
     color: colorC,
@@ -185,6 +260,29 @@ function setCircle(x, y, h, w, colorC) {
   var liElement = createLiElement("circulo");
   select("#lista").child(liElement);
   return circulo;
+}
+
+function setLine(x1, y1, x2, y2, colorC) {
+  var lineObj = {
+    x1: x1,
+    y1: y1,
+    x2: x2,
+    y2: y2,
+    color: colorC,
+    draw: function() {
+      stroke(colorC);
+      line(this.x1, this.y1, this.x2, this.y2);
+    },
+    checkClick: function() {
+      // Implementa la lógica para verificar si se hizo clic en la línea
+      // Puedes omitir esto si no se requiere interacción con las líneas
+    }
+  };
+
+  var liElement = createLiElement("Línea");
+  select("#lista").child(liElement);
+
+  return lineObj;
 }
 
 function updateCuadrado() {
@@ -230,10 +328,15 @@ function draw() {
     obj.draw();
   }
 
-  if (isDrawing) {
+  if (isDrawing && isSquareButtonPressed) {
     noFill();
     stroke(0);
     rect(x1, y1, x2 - x1, y2 - y1);
+  }
+  if (isDrawing && isCircleButtonPressed) {
+    noFill();
+    stroke(0);
+    ellipse(x1+((x2 - x1)*.5), y1+((y2 - y1)*.5), x2 - x1, y2 - y1);
   }
 }
 
@@ -246,12 +349,16 @@ function mousePressed() {
     if (objectsStack[i].checkClick()) {
       var cuadrado = objectsStack[i];
       var circulo = objectsStack[i]
+      var figura = objectsStack[i];
 
-      // Establecer el cuadrado actual como el cuadrado seleccionado
+      figuraActual = figura;
+
+      startX = mouseX;
+      startY = mouseY;
+
       cuadradoActual = cuadrado;
       circuloActual = circulo;
 
-      // Actualizar los valores de los inputs según los atributos del cuadrado seleccionado
       select('#x').value(cuadrado.x);
       select('#y').value(cuadrado.y);
       select('#w').value(cuadrado.w);
@@ -268,8 +375,10 @@ function mousePressed() {
     }
   }
 }
-
 function createLiElement(text) {
   var liElement = createElement("li", text);
   return liElement;
+}
+function disableDragging() {
+  isDraggingEnabled = false;
 }
