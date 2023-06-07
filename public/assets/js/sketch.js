@@ -5,6 +5,7 @@ var x1, y1, x2, y2;
 var isDrawing = false;
 var isSquareButtonPressed = false;
 var isCircleButtonPressed = false;
+var isLineButtonPressed = false;
 var figuraActual;
 
 var startX;
@@ -103,7 +104,6 @@ function handleLinePress() {
   select('#w').value(null);
   select('#h').value(null);
   isLineButtonPressed = true;
-
 }
 
 function handleCanvasPress() {
@@ -216,9 +216,9 @@ function setSquare(x, y, h, w, colorC) {
     checkClick: function () {
       if (
         mouseX >= this.x &&
-        mouseX <= this.x + this.w &&
+        mouseX <= this.x + this.h &&
         mouseY >= this.y &&
-        mouseY <= this.y + this.h
+        mouseY <= this.y + this.w
       ) {
         console.log(`me presionaron  ${this.color}`);
         return true;
@@ -246,13 +246,15 @@ function setCircle(x, y, h, w, colorC) {
 
     checkClick: function () {
       if (
-        mouseX >= this.x &&
-        mouseX <= this.x + this.w &&
-        mouseY >= this.y &&
-        mouseY <= this.y + this.h
+        mouseX >= this.x-(this.h*.5) &&
+        mouseX <= this.x + (this.h*.5)&&
+        mouseY >= this.y-(this.w*.5) &&
+        mouseY <= this.y +  (this.w*.5)
       ) {
-        console.log(`me presionaron circulo  ${this.color}`);
+        console.log(`me presionaron circulo  ${mouseX},${mouseY},,,,${this.x},${this.y}`);
         return true;
+      }else{
+        console.log(`no me presionaron circulo  ${mouseX},${mouseY}`);
       }
       return false;
     }
@@ -332,11 +334,18 @@ function draw() {
     noFill();
     stroke(0);
     rect(x1, y1, x2 - x1, y2 - y1);
-  }
-  if (isDrawing && isCircleButtonPressed) {
-    noFill();
-    stroke(0);
-    ellipse(x1+((x2 - x1)*.5), y1+((y2 - y1)*.5), x2 - x1, y2 - y1);
+  }else{
+    if (isDrawing && isCircleButtonPressed) {
+      noFill();
+      stroke(0);
+      ellipse(x1+((x2 - x1)*.5), y1+((y2 - y1)*.5), x2 - x1, y2 - y1);
+    }else{
+      if (isDrawing && isLineButtonPressed) {
+        // noFill();
+        stroke(0);
+        line(x1,y1, x2, y2);
+      }
+    }
   }
 }
 
