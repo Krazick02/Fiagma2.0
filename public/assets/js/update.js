@@ -22,7 +22,7 @@ let dragButton;
 var cuadradoActual;
 var circuloActual;
 var lineaActual;
-var idProyecto 
+var idProyecto
 
 
 var isDraggingEnabled = false;
@@ -215,7 +215,7 @@ function setSquare(x, y, h, w, colorC) {
     h: h,
     w: w,
     color: colorC,
-    type:'square',
+    type: 'square',
     draw: function () {
       if (this.color != '#000000') {
         fill(this.color);
@@ -249,7 +249,7 @@ function setCircle(x, y, h, w, colorC) {
     h: h,
     w: w,
     color: colorC,
-    type:'circle',
+    type: 'circle',
     draw: function () {
       if (this.color != '#000000') {
         fill(this.color);
@@ -284,7 +284,7 @@ function setLine(x1, y1, x2, y2, colorC) {
     x2: x2,
     y2: y2,
     color: colorC,
-    type:'line',
+    type: 'line',
     draw: function () {
       stroke(colorC);
       line(this.x1, this.y1, this.x2, this.y2);
@@ -439,20 +439,56 @@ document.addEventListener('click', (e) => {
 //MANDAR AL BACKKK
 var csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
-document.getElementById('guardarLienzo').addEventListener('click', function () {
-  // Configura el token CSRF en el encabezado de la solicitud
+document.getElementById('actualizarLienzo').addEventListener('click', function () {
   axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 
-  // Realiza la solicitud POST a la ruta 'lienzo.store'
-  axios.post('/save', {
-    figuras: objectsStack
+  axios.put('/save', { 
+    figures: objectsStack,
+    idProyecto: document.getElementById('idProyecto').value 
   })
-    .then(function (response) {
-      // Maneja la respuesta exitosa si es necesario
+    .then(response => {
       console.log(response.data);
     })
+    .catch(error => {
+      console.error(error);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  axios.get(`/get/${document.getElementById('idProyecto').value}`)
+    .then(function (response) {
+      var arreglo = response.data.figures
+      console.log(arreglo)
+      arreglo.forEach(figura => {
+        if (figura.type === 'square') {
+          objectsStack.push(setSquare(
+            figura.x,
+            figura.y,
+            figura.h,
+            figura.w,
+            figura.color));
+        } else {
+          if (figura.type === 'circle') {
+            objectsStack.push(setCircle(
+              figura.x,
+              figura.y,
+              figura.h,
+              figura.w,
+              figura.color));
+          } else {
+            if (figura.type === 'line') {
+              objectsStack.push(setLine(
+                figura.x,
+                figura.y,
+                figura.h,
+                figura.w,
+                figura.color));
+            }
+          }
+        }
+      });
+    })
     .catch(function (error) {
-      // Maneja el error si ocurre algún problema
       console.log(error);
     });
 });

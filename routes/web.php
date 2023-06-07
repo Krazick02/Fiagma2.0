@@ -25,10 +25,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/main', function (){
         return view('fiagma.main');
     })->name('fiagma.main');
-    Route::post('/save',[CanvaController::class,'store'])->name('canva.store');
 
-
+    
+    
 });
+Route::post('/save',[CanvaController::class,'store'])->name('canva.store');
+Route::put('/save',[CanvaController::class,'update'])->name('canva.update');
+Route::get('/edit/{id}',[CanvaController::class,'edit'])->name('canva.edit');
+Route::get('/get/{id}',[CanvaController::class,'get_lienzo'])->name('canva.get_lienzo');
 Route::get('/register',[UserController::class,'create'])->name('users.create');
 Route::post('/register',[UserController::class,'store'])->name('users.store');
 

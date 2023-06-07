@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('canvas', function (Blueprint $table) {
             $table->id();
             // $table->string('name');
-            $table->string('figures');
+            $table->longtext('figures');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

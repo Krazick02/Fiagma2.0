@@ -61,11 +61,25 @@
                             </svg>
                         </button>
                     </li>
-                    <li class="nav-item">
-
-                        <button id="guardarLienzo" class="nav-link active" aria-current="page" href="#">
-                            Guardar proyecto
+                    {{-- <li class="nav-item">
+                        <button id="texto" class="nav-link active" aria-current="page" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" fill="white"
+                                class="bi bi-fonts" viewBox="0 0 16 16">
+                                <path
+                                    d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479L12.258 3z" />
+                            </svg>
                         </button>
+                    </li> --}}
+                    <li class="nav-item">
+                        @if (@isset($canva))
+                            <button id="actualizarLienzo" class="nav-link active" aria-current="page" href="#">
+                                Actualizar Proyecto
+                            </button>
+                        @else
+                            <button id="guardarLienzo" class="nav-link active" aria-current="page" href="#">
+                                Guardar Proyecto
+                            </button>
+                        @endif
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-nav-right">
@@ -138,6 +152,7 @@
                     <div class="color-pick">
                         <label for="color" id="colorLabel">#000000</label>
                         <input type="color" name="color" id="color">
+                        <input type="hidden" name="idProyecto" id="idProyecto" value="{{$canva->id}}">
                     </div>
                 </div>
             </div>
@@ -148,7 +163,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
     </script>
-    <script src="{{ asset('assets/js/sketch.js') }}"></script>
+    <script src="{{ asset('assets/js/update.js') }}"></script>
 </body>
 
 </html>
