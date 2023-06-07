@@ -449,10 +449,12 @@ document.getElementById('guardarLienzo').addEventListener('click', function () {
   })
     .then(function (response) {
       // Maneja la respuesta exitosa si es necesario
+      alert('Guardado con exito');
       console.log(response.data);
     })
     .catch(function (error) {
       // Maneja el error si ocurre algún problema
+      alert('Error en guardar');
       console.log(error);
     });
 });

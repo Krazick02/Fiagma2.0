@@ -63,7 +63,7 @@
                     </li>
                     <li class="nav-item">
 
-                        <button id="guardarLienzo" class="nav-link active" aria-current="page" href="#">
+                        <button id="guardarLienzo" class="nav-link active btn btn-primary text-white m-2" aria-current="page" href="#">
                             Guardar proyecto
                         </button>
                     </li>

@@ -447,9 +447,11 @@ document.getElementById('actualizarLienzo').addEventListener('click', function (
     idProyecto: document.getElementById('idProyecto').value 
   })
     .then(response => {
+      alert('Guardado correctamente');
       console.log(response.data);
     })
     .catch(error => {
+      alert('salio algo mal :c');
       console.error(error);
     });
 });

@@ -70,13 +70,13 @@
                             </svg>
                         </button>
                     </li> --}}
-                    <li class="nav-item">
+                    <li class="nav-item p-2">
                         @if (@isset($canva))
-                            <button id="actualizarLienzo" class="nav-link active" aria-current="page" href="#">
+                            <button id="actualizarLienzo" class="nav-link active btn btn-primary text-white " aria-current="page" href="#">
                                 Actualizar Proyecto
                             </button>
                         @else
-                            <button id="guardarLienzo" class="nav-link active" aria-current="page" href="#">
+                            <button id="guardarLienzo" class="nav-link active btn" aria-current="page" href="#">
                                 Guardar Proyecto
                             </button>
                         @endif
