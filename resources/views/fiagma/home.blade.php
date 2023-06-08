@@ -88,7 +88,7 @@
             <div style="width: 17%;">
                 <hr class="border border-danger border-1 opacity-50">
             </div>
-            <div class=" p-3 justify-content-start position-fixed top-0" style="width: 100%;">
+               <div class=" p-3 justify-content-start" style="width: 100%;">
                 <a href="{{ route('fiagma.main') }}" class="btn text-white text-center"
                     style="background-color: #FF4F5B; width: 200px; height:40px;">
                     Nuevo diseño
