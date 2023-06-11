@@ -63,7 +63,8 @@
                     </li>
                     <li class="nav-item">
 
-                        <button id="guardarLienzo" class="nav-link active btn btn-primary text-white m-2" aria-current="page" href="#">
+                        <button id="guardarLienzo" class="nav-link active btn btn-primary text-white m-2"
+                            aria-current="page" href="#">
                             Guardar proyecto
                         </button>
                     </li>
@@ -71,15 +72,15 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-nav-right">
                     <li class="nav-item">
 
-                        <a class="nav-link active" aria-current="page" href="{{route('home')}}">
-                           Inicio
+                        <a class="nav-link active" aria-current="page" href="{{ route('home') }}">
+                            Inicio
                         </a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
-                                fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
+                                class="bi bi-person-circle" viewBox="0 0 16 16">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                                 <path fill-rule="evenodd"
                                     d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
@@ -105,41 +106,72 @@
     <div class=" row space-0 bg-black">
         <div class="row">
             <div class="col-2 space-1">
+                <div>
+                    <button id='subirCapa'>Up</button>
+                    <button id='bajarCapa'>Down</button>
+                </div>
                 <ul id="lista">
 
                 </ul>
             </div>
             <div class="col-7 space-2" id="canvas">
             </div>
-            <div class="col-3 space-3">
-                <div class="atributes">
-                    <p>Attributes</p>
-                    <div class="row">
-                        <div class="inputs-group col-6">
-                            <label for="x">X</label>
-                            <input type="number" name="x" id="x" class="entryes">
+            <div class="col-3 space-3 d-none" id="workSpaceSquare">
+                <div class="col-12">
+                    <div class="atributes">
+                        <p>Coordinates</p>
+                        <div class="row">
+                            <div class="inputs-group col-6">
+                                <label for="x">X</label>
+                                <input type="number" name="x" id="x" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="y">Y</label>
+                                <input type="number" name="y" id="y" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="w">H</label>
+                                <input type="number" name="w" id="w" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="h">W</label>
+                                <input type="number" name="h" id="h" class="entryes">
+                            </div>
                         </div>
-                        <div class="inputs-group col-6">
-                            <label for="y">Y</label>
-                            <input type="number" name="y" id="y" class="entryes">
+                    </div>
+                    <div class="fill">
+                        <p>Fill</p>
+                        <div class="color-pick">
+                            <label for="color" id="colorLabel">#000000</label>
+                            <input type="color" name="color" id="color">
                         </div>
-                        <div class="inputs-group col-6">
-                            <label for="w">H</label>
-                            <input type="number" name="w" id="w" class="entryes">
+                    </div>
+                    <div class="opacidades">
+                        <p>Atributes</p>
+                        <div class="inputs-group">
+                            <label for="borderColor" id="borderColorLabel">#000000</label>
+                            <input type="color" name="borderColor" id="borderColor">
                         </div>
-                        <div class="inputs-group col-6">
-                            <label for="h">W</label>
-                            <input type="number" name="h" id="h" class="entryes">
+                        <div class="inputs-group">
+                            <label for="fillOpacity" id="">Fill Opacity</label>
+                            <input type="number" min="0" max="255" name="fillOpacity" id="fillOpacity">
+                        </div>
+                        <div class="inputs-group">
+                            <label for="borderOpacity" id="">Border opacity</label>
+                            <input type="number" min="0" max="255" name="borderOpacity" id="borderOpacity">
+                        </div>
+                        <div class="inputs-group">
+                            <label for="borderSize" id="">Border size</label>
+                            <input type="number" min="0" max="255" name="borderSize" id="borderSize">
+                        </div>
+                        <div class="inputs-group">
+                            <label for="corner" id="">Corner</label>
+                            <input type="number" min="0" max="255" name="corner" id="corner">
                         </div>
                     </div>
                 </div>
-                <div class="fill">
-                    <p>Fill</p>
-                    <div class="color-pick">
-                        <label for="color" id="colorLabel">#000000</label>
-                        <input type="color" name="color" id="color">
-                    </div>
-                </div>
+                <div class="col-12"></div>
+                <div class="col-12"></div>
             </div>
         </div>
     </div>
