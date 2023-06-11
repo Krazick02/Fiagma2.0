@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
@@ -62,8 +63,20 @@
                         </button>
                     </li>
                     <li class="nav-item">
+                        <button id="text" class="nav-link active" aria-current="page" href="#">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" fill="white" class="bi bi-fonts" viewBox="0 0 16 16">
+                            <path d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479L12.258 3z"/>
+                          </svg>
+                        </button>
+                    </li>
+                    {{-- <li class="nav-item">
                         <button id="text" class="nav-link active" href="#">
                             TEXT
+                        </button>
+                    </li> --}}
+                    <li class="nav-item">
+                        <button id="deleteButton" class="nav-link active" href="#">
+                            <i class="fa fa-eraser" style="font-size:24px"></i>
                         </button>
                     </li>
                     <li class="nav-item">
@@ -192,6 +205,43 @@
                             <input type="number" min="0" max="255" name="corner" id="corner">
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="col-3 space-3 d-none" id="workSpaceText">
+                <div class="col-12">
+                    <div class="atributes">
+                        <p>Coordinates</p>
+                        <div class="row ">
+                            <div class="inputs-group col-6">
+                                <label for="x">X</label>
+                                <input type="number" name="textx" id="textx" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="y">Y</label>
+                                <input type="number" name="texty" id="texty" class="entryes">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fill">
+                        <div class="color-pick">
+                            <label for="textcolor">Color</label>
+                            <input type="color" name="textcolor" id="textcolor">
+                        </div>
+                        <div class="color-pick">
+                            <label for="textsize">Tamaño</label>
+                            <input type="number" min="0" max="255" name="textsize" id="textsize">
+                        </div>
+                    </div>
+                    <div class="atributes">
+                        <p>Text</p>
+                        <div class="row ">
+                            <div class="inputs-group">
+                                <label for="y">Text</label>
+                                <input type="text" name="description" id="description" class="entryes">
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>

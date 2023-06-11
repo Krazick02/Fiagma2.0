@@ -90,6 +90,12 @@ function setup() {
   select('#x2').input(updateLine);
   select('#y2').input(updateLine);
 
+  select('#textx').input(updateText);
+  select('#texty').input(updateText);
+  select('#description').input(updateText);
+  select('#textcolor').input(updateText);
+  select('#textsize').input(updateText);
+
   if (figuraActual) {
     select('#color').input(updateCirculo);
     select('#color').input(updateCuadrado);
@@ -102,6 +108,9 @@ function setup() {
     isSquareButtonPressed = false;
     isCircleButtonPressed = false;
     isLineButtonPressed = false;
+    select('#workSpaceSquare').addClass('d-none')
+    select('#workSpaceText').addClass('d-none')
+    disableDragging()
   });
 
 }
@@ -149,6 +158,7 @@ function handleCuadradoPress() {
   isLineButtonPressed = false;
   enableText = false;
   select('#workSpaceSquare').addClass('d-none')
+  select('#workSpaceText').addClass('d-none')
 
 }
 function handleCirclePress() {
@@ -168,6 +178,8 @@ function handleCirclePress() {
   isCircleButtonPressed = true;
   isLineButtonPressed = false;
   select('#workSpaceSquare').addClass('d-none')
+  select('#workSpaceText').addClass('d-none')
+
   enableText = false;
 }
 
@@ -189,6 +201,8 @@ function handleLinePress() {
   isCircleButtonPressed = false;
   isLineButtonPressed = true;
   select('#workSpaceSquare').addClass('d-none')
+  select('#workSpaceText').addClass('d-none')
+
   enableText = false;
 }
 
@@ -328,6 +342,8 @@ function setSquare(x, y, h, w, colorC) {
         select('#opacidadRelleno').removeClass('d-none')
         select('#dibujarLinea').addClass('d-none')
         select('#dibujarResto').removeClass('d-none')
+        select('#workSpaceText').addClass('d-none')
+
         figuraTarget = this
         return true;
       }
@@ -372,6 +388,8 @@ function setCircle(x, y, h, w, colorC) {
         select('#redondeado').addClass('d-none')
         select('#dibujarLinea').addClass('d-none')
         select('#dibujarResto').removeClass('d-none')
+        select('#workSpaceText').addClass('d-none')
+
         figuraTarget = this
 
         return true;
@@ -418,6 +436,8 @@ function setLine(x1, y1, x2, y2, colorC) {
         select('#opacidadRelleno').addClass('d-none')
         select('#dibujarLinea').removeClass('d-none')
         select('#dibujarResto').addClass('d-none')
+        select('#workSpaceText').addClass('d-none')
+
         figuraTarget = this
 
         return true;
@@ -445,13 +465,31 @@ function setText(texto) {
       text(this.texto, this.x, this.y);
     },
     checkClick: function () {
-      
+      textSize(this.fontSize);
+      var textWidthValue = textWidth(this.texto);
+      var textHeightValue = textAscent() + textDescent();
+
+      var left = this.x - textWidthValue / 2;
+      var right = this.x + textWidthValue / 2;
+      var top = this.y - textHeightValue / 2;
+      var bottom = this.y + textHeightValue / 2;
+
+      if (mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom && isDraggingEnabled == true) {
+        select('#workSpaceSquare').addClass('d-none')
+        select('#workSpaceText').removeClass('d-none')
+        figuraTarget = this
+        return true;
+      } else {
+        return false;
+      }
     }
   };
+
   var liElement = createLiElement("Texto");
   select("#lista").child(liElement);
   return textObj;
 }
+
 
 function updateCuadrado() {
   if (cuadradoActual) {
@@ -515,6 +553,21 @@ function updateLine() {
     lineaActual.x2 = newW;
     lineaActual.y2 = newH;
     lineaActual.color = newColor;
+  }
+}
+function updateText() {
+  if (textoActual) {
+    var newX = parseInt(select('#textx').value());
+    var newY = parseInt(select('#texty').value());
+    var newDes = select('#description').value();
+    var newSize = parseInt(select('#textsize').value());
+    var newColor = select('#textcolor').value();
+
+    textoActual.x1 = newX;
+    textoActual.y1 = newY;
+    textoActual.texto = newDes;
+    textoActual.fontSize = newSize;
+    textoActual.color = newColor;
   }
 }
 
@@ -604,15 +657,11 @@ function mousePressed() {
         colorLabel.html(linea.borderColor);
       }
       if (texto) {
-        // select('#x1').value(linea.x1);
-        // select('#y1').value(linea.y1);
-        // select('#x2').value(linea.x2);
-        // select('#y2').value(linea.y2);
-        // select('#borderColor').value(linea.borderColor);
-        // select('#borderOpacity').value(linea.borderOpacity);
-        // select('#borderSize').value(linea.borderSize);
-        // colorLabel.html(linea.borderColor);
-        console.log(texto)
+        select('#textx').value(texto.x);
+        select('#texty').value(texto.y);
+        select('#description').value(texto.texto);
+        select('#textcolor').value(texto.color);
+        select('#textsize').value(texto.fontSize);
       }
 
       break;
@@ -634,24 +683,21 @@ document.addEventListener('click', (e) => {
 })
 
 
-document.addEventListener("keydown", function (event) {
-  if (event.key === "Backspace" || event.keyCode === 8) {
-    // // Se ha presionado el botón "Backspace"
-    // console.log("Se ha presionado el botón Backspace");
-    // // Tu lógica adicional aquí
-    let list = []
-    list = objectsStack.filter(function (objeto) {
-      return objeto !== figuraTarget;
-    });
+document.getElementById('deleteButton').addEventListener('click', function () {
+  let list = []
+  list = objectsStack.filter(function (objeto) {
+    return objeto !== figuraTarget;
+  });
 
-    objectsStack = list
-  }
+  objectsStack = list
 });
 
 function dibujarText() {
   userInput = prompt('Ingresa el texto:');
-  var text = setText(userInput)
-  objectsStack.push(text);
+  if (userInput) {
+    var text = setText(userInput)
+    objectsStack.push(text);
+  }
   // console.log(mouseX,mouseY)
   // console.log(x1,y1)
 }

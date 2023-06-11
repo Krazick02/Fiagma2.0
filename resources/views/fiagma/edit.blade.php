@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
@@ -61,6 +63,25 @@
                             </svg>
                         </button>
                     </li>
+                    <li class="nav-item">
+                        <button id="text" class="nav-link active" aria-current="page" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" fill="white"
+                                class="bi bi-fonts" viewBox="0 0 16 16">
+                                <path
+                                    d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479L12.258 3z" />
+                            </svg>
+                        </button>
+                    </li>
+                    {{-- <li class="nav-item">
+                        <button id="text" class="nav-link active" href="#">
+                            TEXT
+                        </button>
+                    </li> --}}
+                    <li class="nav-item">
+                        <button id="deleteButton" class="nav-link active" href="#">
+                            <i class="fa fa-eraser" style="font-size:24px"></i>
+                        </button>
+                    </li>
                     {{-- <li class="nav-item">
                         <button id="texto" class="nav-link active" aria-current="page" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" fill="white"
@@ -72,7 +93,8 @@
                     </li> --}}
                     <li class="nav-item p-2">
                         @if (@isset($canva))
-                            <button id="actualizarLienzo" class="nav-link active btn btn-primary text-white " aria-current="page" href="#">
+                            <button id="actualizarLienzo" class="nav-link active btn btn-primary text-white "
+                                aria-current="page" href="#">
                                 Actualizar Proyecto
                             </button>
                         @else
@@ -85,8 +107,8 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-nav-right">
                     <li class="nav-item">
 
-                        <a class="nav-link active" aria-current="page" href="{{route('home')}}">
-                           Inicio
+                        <a class="nav-link active" aria-current="page" href="{{ route('home') }}">
+                            Inicio
                         </a>
                     </li>
                     <li class="nav-item dropdown">
@@ -150,7 +172,7 @@
                                 <label for="h">W</label>
                                 <input type="number" name="h" id="h" class="entryes">
                             </div>
-                            <input type="hidden" name="idProyecto" id="idProyecto" value="{{$canva->id}}">
+                            <input type="hidden" name="idProyecto" id="idProyecto" value="{{ $canva->id }}">
                         </div>
                         <div class="row d-none" id="dibujarLinea">
                             <div class="inputs-group col-6">
@@ -186,11 +208,13 @@
                         </div>
                         <div class="inputs-group" id="opacidadRelleno">
                             <label for="fillOpacity" id="">Fill Opacity</label>
-                            <input type="number" min="0" max="255" name="fillOpacity" id="fillOpacity">
+                            <input type="number" min="0" max="255" name="fillOpacity"
+                                id="fillOpacity">
                         </div>
                         <div class="inputs-group">
                             <label for="borderOpacity" id="">Border opacity</label>
-                            <input type="number" min="0" max="255" name="borderOpacity" id="borderOpacity">
+                            <input type="number" min="0" max="255" name="borderOpacity"
+                                id="borderOpacity">
                         </div>
                         <div class="inputs-group">
                             <label for="borderSize" id="">Border size</label>
@@ -203,14 +227,50 @@
                     </div>
                 </div>
             </div>
+            <div class="col-3 space-3 d-none" id="workSpaceText">
+                <div class="col-12">
+                    <div class="atributes">
+                        <p>Coordinates</p>
+                        <div class="row ">
+                            <div class="inputs-group col-6">
+                                <label for="x">X</label>
+                                <input type="number" name="textx" id="textx" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="y">Y</label>
+                                <input type="number" name="texty" id="texty" class="entryes">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fill">
+                        <div class="color-pick">
+                            <label for="textcolor">Color</label>
+                            <input type="color" name="textcolor" id="textcolor">
+                        </div>
+                        <div class="color-pick">
+                            <label for="textsize">Tamaño</label>
+                            <input type="number" min="0" max="255" name="textsize" id="textsize">
+                        </div>
+                    </div>
+                    <div class="atributes">
+                        <p>Text</p>
+                        <div class="row ">
+                            <div class="inputs-group">
+                                <label for="y">Text</label>
+                                <input type="text" name="description" id="description" class="entryes">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
-    </script>
-    <script src="{{ asset('assets/js/update.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
+        </script>
+        <script src="{{ asset('assets/js/update.js') }}"></script>
 </body>
 
 </html>
