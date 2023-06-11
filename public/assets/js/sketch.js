@@ -12,6 +12,11 @@ var isLineButtonPressed = false;
 var figuraActual;
 var figuraTarget;
 
+let enableText = false;
+let userInput = '';
+// var isTextButtonPressed = false;
+
+
 var startX;
 var startY;
 
@@ -26,6 +31,7 @@ let dragButton;
 var cuadradoActual;
 var circuloActual;
 var lineaActual;
+var textoActual;
 var idProyecto
 
 var isDraggingEnabled = false;
@@ -36,6 +42,7 @@ function enableDragging() {
   isSquareButtonPressed = false;
   isCircleButtonPressed = false;
   isLineButtonPressed = false;
+  enableText = false;
 }
 
 function setup() {
@@ -89,6 +96,14 @@ function setup() {
     select('#borderColor').input(updateCuadrado);
     select('#color').input(updateLine);
   }
+
+  select('#text').mousePressed(() => {
+    enableText = true;
+    isSquareButtonPressed = false;
+    isCircleButtonPressed = false;
+    isLineButtonPressed = false;
+  });
+
 }
 
 function updateColor() {
@@ -132,6 +147,7 @@ function handleCuadradoPress() {
   isSquareButtonPressed = true;
   isCircleButtonPressed = false;
   isLineButtonPressed = false;
+  enableText = false;
   select('#workSpaceSquare').addClass('d-none')
 
 }
@@ -152,7 +168,7 @@ function handleCirclePress() {
   isCircleButtonPressed = true;
   isLineButtonPressed = false;
   select('#workSpaceSquare').addClass('d-none')
-
+  enableText = false;
 }
 
 function handleLinePress() {
@@ -173,6 +189,7 @@ function handleLinePress() {
   isCircleButtonPressed = false;
   isLineButtonPressed = true;
   select('#workSpaceSquare').addClass('d-none')
+  enableText = false;
 }
 
 function handleCanvasPress() {
@@ -208,6 +225,10 @@ function handleCanvasPress() {
         break;
       }
     }
+  }
+
+  if (enableText) {
+    dibujarText()
   }
 }
 
@@ -259,6 +280,7 @@ function mouseReleased() {
 
     }
   }
+
   startX = null;
   startY = null;
 
@@ -305,7 +327,7 @@ function setSquare(x, y, h, w, colorC) {
         select('#rellenoFigura').removeClass('d-none')
         select('#opacidadRelleno').removeClass('d-none')
         select('#dibujarLinea').addClass('d-none')
-  select('#dibujarResto').removeClass('d-none')
+        select('#dibujarResto').removeClass('d-none')
         figuraTarget = this
         return true;
       }
@@ -349,7 +371,7 @@ function setCircle(x, y, h, w, colorC) {
         // select('#workSpaceCircle').removeClass('d-none')
         select('#redondeado').addClass('d-none')
         select('#dibujarLinea').addClass('d-none')
-  select('#dibujarResto').removeClass('d-none')
+        select('#dibujarResto').removeClass('d-none')
         figuraTarget = this
 
         return true;
@@ -395,7 +417,7 @@ function setLine(x1, y1, x2, y2, colorC) {
         select('#rellenoFigura').addClass('d-none')
         select('#opacidadRelleno').addClass('d-none')
         select('#dibujarLinea').removeClass('d-none')
-  select('#dibujarResto').addClass('d-none')
+        select('#dibujarResto').addClass('d-none')
         figuraTarget = this
 
         return true;
@@ -407,6 +429,28 @@ function setLine(x1, y1, x2, y2, colorC) {
   var liElement = createLiElement("Linea");
   select("#lista").child(liElement);
   return lineObj;
+}
+function setText(texto) {
+  var textObj = {
+    x: mouseX,
+    y: mouseY,
+    texto: texto,
+    color: color('#000000'),
+    fontSize: 10,
+    type: 'text',
+    draw: function () {
+      textSize(this.fontSize);
+      fill(this.color);
+      textAlign(CENTER, CENTER);
+      text(this.texto, this.x, this.y);
+    },
+    checkClick: function () {
+      
+    }
+  };
+  var liElement = createLiElement("Texto");
+  select("#lista").child(liElement);
+  return textObj;
 }
 
 function updateCuadrado() {
@@ -509,6 +553,7 @@ function mousePressed() {
       var cuadrado = objectsStack[i];
       var circulo = objectsStack[i]
       var linea = objectsStack[i]
+      var texto = objectsStack[i]
       var figura = objectsStack[i];
 
       figuraActual = figura;
@@ -519,6 +564,7 @@ function mousePressed() {
       cuadradoActual = cuadrado;
       circuloActual = circulo;
       lineaActual = linea;
+      textoActual = texto;
 
       if (cuadrado) {
         select('#x').value(cuadrado.x);
@@ -557,6 +603,17 @@ function mousePressed() {
         select('#borderSize').value(linea.borderSize);
         colorLabel.html(linea.borderColor);
       }
+      if (texto) {
+        // select('#x1').value(linea.x1);
+        // select('#y1').value(linea.y1);
+        // select('#x2').value(linea.x2);
+        // select('#y2').value(linea.y2);
+        // select('#borderColor').value(linea.borderColor);
+        // select('#borderOpacity').value(linea.borderOpacity);
+        // select('#borderSize').value(linea.borderSize);
+        // colorLabel.html(linea.borderColor);
+        console.log(texto)
+      }
 
       break;
     }
@@ -591,7 +648,13 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-
+function dibujarText() {
+  userInput = prompt('Ingresa el texto:');
+  var text = setText(userInput)
+  objectsStack.push(text);
+  // console.log(mouseX,mouseY)
+  // console.log(x1,y1)
+}
 
 
 //MANDAR AL BACKKK

@@ -62,6 +62,11 @@
                         </button>
                     </li>
                     <li class="nav-item">
+                        <button id="text" class="nav-link active" href="#">
+                            TEXT
+                        </button>
+                    </li>
+                    <li class="nav-item">
 
                         <button id="guardarLienzo" class="nav-link active btn btn-primary text-white m-2"
                             aria-current="page" href="#">
