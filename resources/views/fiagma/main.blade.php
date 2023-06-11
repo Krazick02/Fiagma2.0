@@ -120,7 +120,7 @@
                 <div class="col-12">
                     <div class="atributes">
                         <p>Coordinates</p>
-                        <div class="row">
+                        <div class="row d-none" id="dibujarResto">
                             <div class="inputs-group col-6">
                                 <label for="x">X</label>
                                 <input type="number" name="x" id="x" class="entryes">
@@ -138,8 +138,26 @@
                                 <input type="number" name="h" id="h" class="entryes">
                             </div>
                         </div>
+                        <div class="row d-none" id="dibujarLinea">
+                            <div class="inputs-group col-6">
+                                <label for="x">X1</label>
+                                <input type="number" name="x1" id="x1" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="y">Y1</label>
+                                <input type="number" name="y1" id="y1" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="w">X2</label>
+                                <input type="number" name="x2" id="x2" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="h">Y2</label>
+                                <input type="number" name="y2" id="y2" class="entryes">
+                            </div>
+                        </div>
                     </div>
-                    <div class="fill">
+                    <div class="fill" id="rellenoFigura">
                         <p>Fill</p>
                         <div class="color-pick">
                             <label for="color" id="colorLabel">#000000</label>
@@ -152,7 +170,7 @@
                             <label for="borderColor" id="borderColorLabel">#000000</label>
                             <input type="color" name="borderColor" id="borderColor">
                         </div>
-                        <div class="inputs-group">
+                        <div class="inputs-group" id="opacidadRelleno">
                             <label for="fillOpacity" id="">Fill Opacity</label>
                             <input type="number" min="0" max="255" name="fillOpacity" id="fillOpacity">
                         </div>
@@ -164,7 +182,7 @@
                             <label for="borderSize" id="">Border size</label>
                             <input type="number" min="0" max="255" name="borderSize" id="borderSize">
                         </div>
-                        <div class="inputs-group">
+                        <div class="inputs-group" id="redondeado">
                             <label for="corner" id="">Corner</label>
                             <input type="number" min="0" max="255" name="corner" id="corner">
                         </div>

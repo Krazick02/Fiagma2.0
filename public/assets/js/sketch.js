@@ -10,6 +10,7 @@ var isSquareButtonPressed = false;
 var isCircleButtonPressed = false;
 var isLineButtonPressed = false;
 var figuraActual;
+var figuraTarget;
 
 var startX;
 var startY;
@@ -46,12 +47,6 @@ function setup() {
   dragButton = select('#dragFigure');
   idProyecto = select('#idProyecto');
 
-  // fillOpacity= select('#filOpacity')
-  // borderOpacity= select('#borderOpacity')
-  // borderSize= select('#borderSize')
-  // corner= select('#corner')
-
-
   var canvas = createCanvas(contenedor.width, contenedor.height);
   canvas.parent('canvas');
 
@@ -83,10 +78,10 @@ function setup() {
   select('#w').input(updateCirculo);
   select('#h').input(updateCirculo);
 
-  select('#x').input(updateLine);
-  select('#y').input(updateLine);
-  select('#w').input(updateLine);
-  select('#h').input(updateLine);
+  select('#x1').input(updateLine);
+  select('#y1').input(updateLine);
+  select('#x2').input(updateLine);
+  select('#y2').input(updateLine);
 
   if (figuraActual) {
     select('#color').input(updateCirculo);
@@ -137,6 +132,8 @@ function handleCuadradoPress() {
   isSquareButtonPressed = true;
   isCircleButtonPressed = false;
   isLineButtonPressed = false;
+  select('#workSpaceSquare').addClass('d-none')
+
 }
 function handleCirclePress() {
   disableDragging()
@@ -146,22 +143,36 @@ function handleCirclePress() {
   select('#h').value(null);
   select('#color').value('#000000');
   select('#borderColor').value('#000000');
+  select('#fillOpacity').value(null);
+  select('#borderOpacity').value(null);
+  select('#borderSize').value(null);
+  colorLabel.html('#000000')
+  borderColorLabel.html('#000000')
   isSquareButtonPressed = false;
   isCircleButtonPressed = true;
   isLineButtonPressed = false;
+  select('#workSpaceSquare').addClass('d-none')
+
 }
 
 function handleLinePress() {
   disableDragging();
-  select('#x').value(null);
-  select('#y').value(null);
-  select('#w').value(null);
-  select('#h').value(null);
+  select('#x1').value(null);
+  select('#y1').value(null);
+  select('#x2').value(null);
+  select('#y2').value(null);
   select('#color').value('#000000');
   select('#borderColor').value('#000000');
+  select('#fillOpacity').value(null);
+  select('#borderOpacity').value(null);
+  select('#borderSize').value(null);
+  select('#corner').value(null);
+  colorLabel.html('#000000')
+  borderColorLabel.html('#000000')
   isSquareButtonPressed = false;
   isCircleButtonPressed = false;
   isLineButtonPressed = true;
+  select('#workSpaceSquare').addClass('d-none')
 }
 
 function handleCanvasPress() {
@@ -289,8 +300,13 @@ function setSquare(x, y, h, w, colorC) {
         mouseY <= this.y + this.w
         && isDraggingEnabled == true
       ) {
-
+        select('#redondeado').removeClass('d-none')
         select('#workSpaceSquare').removeClass('d-none')
+        select('#rellenoFigura').removeClass('d-none')
+        select('#opacidadRelleno').removeClass('d-none')
+        select('#dibujarLinea').addClass('d-none')
+  select('#dibujarResto').removeClass('d-none')
+        figuraTarget = this
         return true;
       }
       return false;
@@ -306,27 +322,36 @@ function setCircle(x, y, h, w, colorC) {
     y: y + (w * .5),
     h: h,
     w: w,
-    color: colorC,
+    borderColor: "#000000",
+    fillOpacity: 255,
+    borderOpacity: 255,
+    borderSize: 1,
+    color: "#ffffff",
     type: 'circle',
     draw: function () {
-      if (this.color != '#000000') {
-        fill(this.color);
-      } else {
-        noFill()
-      }
-      stroke(0);
+      fill(color(this.color), this.fillOpacity);
+      stroke(color(this.borderColor), this.borderOpacity);
+      strokeWeight(this.borderSize);
       ellipse(this.x, this.y, this.h, this.w);
     },
-
     checkClick: function () {
       if (
         mouseX >= this.x - (this.h * .5) &&
         mouseX <= this.x + (this.h * .5) &&
         mouseY >= this.y - (this.w * .5) &&
         mouseY <= this.y + (this.w * .5)
+        && isDraggingEnabled == true
       ) {
 
-        select('#workSpaceSquare').addClass('d-none')
+        select('#workSpaceSquare').removeClass('d-none')
+        select('#rellenoFigura').removeClass('d-none')
+        select('#opacidadRelleno').removeClass('d-none')
+        // select('#workSpaceCircle').removeClass('d-none')
+        select('#redondeado').addClass('d-none')
+        select('#dibujarLinea').addClass('d-none')
+  select('#dibujarResto').removeClass('d-none')
+        figuraTarget = this
+
         return true;
       }
       return false;
@@ -343,23 +368,39 @@ function setLine(x1, y1, x2, y2, colorC) {
     y1: y1,
     x2: x2,
     y2: y2,
-    color: colorC,
+    borderColor: "#000000",
+    borderOpacity: 255,
+    borderSize: 1,
+    // color: colorC,
     type: 'line',
     draw: function () {
-      stroke(colorC);
+      stroke(color(this.borderColor), this.borderOpacity);
+      strokeWeight(this.borderSize);
       line(this.x1, this.y1, this.x2, this.y2);
+      noStroke();
     },
     checkClick: function () {
-      if (
-        mouseX >= this.x &&
-        mouseX <= this.x + this.h &&
-        mouseY >= this.y &&
-        mouseY <= this.y + this.w
-      ) {
+      var clickX = mouseX;
+      var clickY = mouseY;
 
-        select('#workSpaceSquare').addClass('d-none')
+      var lineLength = dist(this.x1, this.y1, this.x2, this.y2);
+
+      var distanceStart = dist(clickX, clickY, this.x1, this.y1);
+
+      var distanceEnd = dist(clickX, clickY, this.x2, this.y2);
+
+      if ((distanceStart + distanceEnd <= lineLength + 1) && isDraggingEnabled == true) {
+        select('#workSpaceSquare').removeClass('d-none');
+        select('#redondeado').addClass('d-none')
+        select('#rellenoFigura').addClass('d-none')
+        select('#opacidadRelleno').addClass('d-none')
+        select('#dibujarLinea').removeClass('d-none')
+  select('#dibujarResto').addClass('d-none')
+        figuraTarget = this
+
         return true;
       }
+
       return false;
     }
   };
@@ -400,27 +441,35 @@ function updateCirculo() {
     var newY = parseInt(select('#y').value());
     var newW = parseInt(select('#w').value());
     var newH = parseInt(select('#h').value());
+    var fillO = parseInt(select('#fillOpacity').value());
+    var borderO = parseInt(select('#borderOpacity').value());
+    var borderS = parseInt(select('#borderSize').value());
     var newColor = select('#color').value();
+    var newBorderColor = select('#borderColor').value();
 
     circuloActual.x = newX;
     circuloActual.y = newY;
     circuloActual.w = newW;
     circuloActual.h = newH;
+    circuloActual.fillOpacity = fillO;
+    circuloActual.borderOpacity = borderO;
+    circuloActual.borderSize = borderS;
+    circuloActual.borderColor = newBorderColor;
     circuloActual.color = newColor;
   }
 }
 function updateLine() {
   if (lineaActual) {
-    var newX = parseInt(select('#x').value());
-    var newY = parseInt(select('#y').value());
-    var newW = parseInt(select('#w').value());
-    var newH = parseInt(select('#h').value());
+    var newX = parseInt(select('#x1').value());
+    var newY = parseInt(select('#y1').value());
+    var newW = parseInt(select('#x2').value());
+    var newH = parseInt(select('#y2').value());
     var newColor = select('#color').value();
 
     lineaActual.x1 = newX;
     lineaActual.y1 = newY;
-    lineaActual.y2 = newW;
-    lineaActual.x2 = newH;
+    lineaActual.x2 = newW;
+    lineaActual.y2 = newH;
     lineaActual.color = newColor;
   }
 }
@@ -459,6 +508,7 @@ function mousePressed() {
     if (objectsStack[i].checkClick()) {
       var cuadrado = objectsStack[i];
       var circulo = objectsStack[i]
+      var linea = objectsStack[i]
       var figura = objectsStack[i];
 
       figuraActual = figura;
@@ -468,25 +518,45 @@ function mousePressed() {
 
       cuadradoActual = cuadrado;
       circuloActual = circulo;
+      lineaActual = linea;
 
-      select('#x').value(cuadrado.x);
-      select('#y').value(cuadrado.y);
-      select('#w').value(cuadrado.w);
-      select('#h').value(cuadrado.h);
-      select('#color').value(cuadrado.color);
-      select('#borderColor').value(cuadrado.borderColor);
-      select('#fillOpacity').value(cuadrado.fillOpacity);
-      select('#borderOpacity').value(cuadrado.borderOpacity);
-      select('#borderSize').value(cuadrado.borderSize);
-      select('#corner').value(cuadrado.corner);
-      colorLabel.html(cuadrado.color);
+      if (cuadrado) {
+        select('#x').value(cuadrado.x);
+        select('#y').value(cuadrado.y);
+        select('#w').value(cuadrado.w);
+        select('#h').value(cuadrado.h);
+        select('#color').value(cuadrado.color);
+        select('#borderColor').value(cuadrado.borderColor);
+        select('#fillOpacity').value(cuadrado.fillOpacity);
+        select('#borderOpacity').value(cuadrado.borderOpacity);
+        select('#borderSize').value(cuadrado.borderSize);
+        select('#corner').value(cuadrado.corner);
+        colorLabel.html(cuadrado.color);
+      }
 
-      select('#x').value(circulo.x);
-      select('#y').value(circulo.y);
-      select('#w').value(circulo.w);
-      select('#h').value(circulo.h);
-      select('#color').value(circulo.color);
-      colorLabel.html(circulo.color);
+      if (circulo) {
+        select('#x').value(circulo.x);
+        select('#y').value(circulo.y);
+        select('#w').value(circulo.w);
+        select('#h').value(circulo.h);
+        select('#color').value(circulo.color);
+        select('#borderColor').value(circulo.borderColor);
+        select('#fillOpacity').value(circulo.fillOpacity);
+        select('#borderOpacity').value(circulo.borderOpacity);
+        select('#borderSize').value(circulo.borderSize);
+        colorLabel.html(circulo.color);
+      }
+
+      if (linea) {
+        select('#x1').value(linea.x1);
+        select('#y1').value(linea.y1);
+        select('#x2').value(linea.x2);
+        select('#y2').value(linea.y2);
+        select('#borderColor').value(linea.borderColor);
+        select('#borderOpacity').value(linea.borderOpacity);
+        select('#borderSize').value(linea.borderSize);
+        colorLabel.html(linea.borderColor);
+      }
 
       break;
     }
@@ -501,12 +571,25 @@ function disableDragging() {
 }
 
 document.addEventListener('click', (e) => {
-  if (figuraActual) {
-    console.log(figuraActual)
+  if (figuraTarget) {
+    console.log(figuraTarget)
   }
 })
 
 
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Backspace" || event.keyCode === 8) {
+    // // Se ha presionado el botón "Backspace"
+    // console.log("Se ha presionado el botón Backspace");
+    // // Tu lógica adicional aquí
+    let list = []
+    list = objectsStack.filter(function (objeto) {
+      return objeto !== figuraTarget;
+    });
+
+    objectsStack = list
+  }
+});
 
 
 
