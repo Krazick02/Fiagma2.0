@@ -119,40 +119,87 @@
     <div class=" row space-0 bg-black">
         <div class="row">
             <div class="col-2 space-1">
+                <div>
+                    <button id='subirCapa'>Up</button>
+                    <button id='bajarCapa'>Down</button>
+                </div>
                 <ul id="lista">
 
                 </ul>
             </div>
             <div class="col-7 space-2" id="canvas">
             </div>
-            <div class="col-3 space-3">
-                <div class="atributes">
-                    <p>Attributes</p>
-                    <div class="row">
-                        <div class="inputs-group col-6">
-                            <label for="x">X</label>
-                            <input type="number" name="x" id="x" class="entryes">
+            <div class="col-3 space-3 d-none" id="workSpaceSquare">
+                <div class="col-12">
+                    <div class="atributes">
+                        <p>Coordinates</p>
+                        <div class="row d-none" id="dibujarResto">
+                            <div class="inputs-group col-6">
+                                <label for="x">X</label>
+                                <input type="number" name="x" id="x" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="y">Y</label>
+                                <input type="number" name="y" id="y" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="w">H</label>
+                                <input type="number" name="w" id="w" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="h">W</label>
+                                <input type="number" name="h" id="h" class="entryes">
+                            </div>
+                            <input type="hidden" name="idProyecto" id="idProyecto" value="{{$canva->id}}">
                         </div>
-                        <div class="inputs-group col-6">
-                            <label for="y">Y</label>
-                            <input type="number" name="y" id="y" class="entryes">
-                        </div>
-                        <div class="inputs-group col-6">
-                            <label for="w">H</label>
-                            <input type="number" name="w" id="w" class="entryes">
-                        </div>
-                        <div class="inputs-group col-6">
-                            <label for="h">W</label>
-                            <input type="number" name="h" id="h" class="entryes">
+                        <div class="row d-none" id="dibujarLinea">
+                            <div class="inputs-group col-6">
+                                <label for="x">X1</label>
+                                <input type="number" name="x1" id="x1" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="y">Y1</label>
+                                <input type="number" name="y1" id="y1" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="w">X2</label>
+                                <input type="number" name="x2" id="x2" class="entryes">
+                            </div>
+                            <div class="inputs-group col-6">
+                                <label for="h">Y2</label>
+                                <input type="number" name="y2" id="y2" class="entryes">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="fill">
-                    <p>Fill</p>
-                    <div class="color-pick">
-                        <label for="color" id="colorLabel">#000000</label>
-                        <input type="color" name="color" id="color">
-                        <input type="hidden" name="idProyecto" id="idProyecto" value="{{$canva->id}}">
+                    <div class="fill" id="rellenoFigura">
+                        <p>Fill</p>
+                        <div class="color-pick">
+                            <label for="color" id="colorLabel">#000000</label>
+                            <input type="color" name="color" id="color">
+                        </div>
+                    </div>
+                    <div class="opacidades">
+                        <p>Atributes</p>
+                        <div class="inputs-group">
+                            <label for="borderColor" id="borderColorLabel">#000000</label>
+                            <input type="color" name="borderColor" id="borderColor">
+                        </div>
+                        <div class="inputs-group" id="opacidadRelleno">
+                            <label for="fillOpacity" id="">Fill Opacity</label>
+                            <input type="number" min="0" max="255" name="fillOpacity" id="fillOpacity">
+                        </div>
+                        <div class="inputs-group">
+                            <label for="borderOpacity" id="">Border opacity</label>
+                            <input type="number" min="0" max="255" name="borderOpacity" id="borderOpacity">
+                        </div>
+                        <div class="inputs-group">
+                            <label for="borderSize" id="">Border size</label>
+                            <input type="number" min="0" max="255" name="borderSize" id="borderSize">
+                        </div>
+                        <div class="inputs-group" id="redondeado">
+                            <label for="corner" id="">Corner</label>
+                            <input type="number" min="0" max="255" name="corner" id="corner">
+                        </div>
                     </div>
                 </div>
             </div>
