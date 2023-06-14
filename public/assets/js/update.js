@@ -12,6 +12,8 @@ var isLineButtonPressed = false;
 var figuraActual;
 var figuraTarget;
 let posicionObjeto;
+let isInside = false
+
 
 
 let enableText = false;
@@ -278,18 +280,18 @@ function mouseDragged() {
 
 function mouseReleased() {
   if (x1 != x2 && y1 != y2) {
-    if (isSquareButtonPressed && isDrawing) {
+    if (isSquareButtonPressed && isDrawing && isInside) {
       var newObj = setSquare(x1, y1, x2 - x1, y2 - y1, colorInput.value());
       objectsStack.push(newObj);
       cuadradoActual = newObj;
     }
-    if (isCircleButtonPressed && isDrawing) {
+    if (isCircleButtonPressed && isDrawing && isInside) {
       var newObj1 = setCircle(x1, y1, x2 - x1, y2 - y1, colorInput.value());
       objectsStack.push(newObj1);
       circuloActual = newObj1;
 
     }
-    if (isLineButtonPressed && isDrawing) {
+    if (isLineButtonPressed && isDrawing && isInside) {
       var newLine = setLine(x1, y1, x2, y2, colorInput.value());
       objectsStack.push(newLine);
       lineaActual = newLine;
@@ -580,22 +582,34 @@ function draw() {
 
     obj.draw();
   }
-  if (isDrawing && isSquareButtonPressed) {
+  if (isDrawing && isSquareButtonPressed && isInside) {
     noFill();
     stroke(0);
     rect(x1, y1, x2 - x1, y2 - y1);
   } else {
-    if (isDrawing && isCircleButtonPressed) {
+    if (isDrawing && isCircleButtonPressed && isInside) {
       noFill();
       stroke(0);
       ellipse(x1 + ((x2 - x1) * .5), y1 + ((y2 - y1) * .5), x2 - x1, y2 - y1);
     } else {
-      if (isDrawing && isLineButtonPressed) {
+      if (isDrawing && isLineButtonPressed && isInside) {
         stroke(0);
         line(x1, y1, x2, y2);
       }
     }
+  } 
+  
+  if (isMouseInsideCanvas()) {
+    // console.log("Mouse dentro del lienzo");
+    isInside = true
+  } else {
+    // console.log("Mouse fuera del lienzo");
+    isInside = false
   }
+}
+
+function isMouseInsideCanvas() {
+  return mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height;
 }
 
 function windowResized() {
