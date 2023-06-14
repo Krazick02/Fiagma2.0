@@ -11,6 +11,8 @@ var isCircleButtonPressed = false;
 var isLineButtonPressed = false;
 var figuraActual;
 var figuraTarget;
+let posicionObjeto;
+
 
 let enableText = false;
 let userInput = '';
@@ -690,6 +692,8 @@ document.getElementById('deleteButton').addEventListener('click', function () {
   });
 
   objectsStack = list
+
+  actualizarLista()
 });
 
 function dibujarText() {
@@ -726,3 +730,73 @@ document.getElementById('guardarLienzo').addEventListener('click', function () {
       console.log(error);
     });
 });
+
+
+// function actualizarLista() {
+//   var lista = document.getElementById("lista");
+
+//   // Vaciar el contenido actual de la lista
+//   while (lista.firstChild) {
+//     lista.removeChild(lista.firstChild);
+//   }
+
+//   // Recorrer el array y crear los elementos de lista
+//   objectsStack.forEach(function (elemento) {
+//     var nuevoElemento = document.createElement("li");
+//     nuevoElemento.textContent = elemento.type;
+//     lista.appendChild(nuevoElemento);
+//   });
+// }
+
+
+
+
+function actualizarPosicion(direccion) {
+  posicionObjeto = objectsStack.indexOf(figuraTarget)
+
+  if (direccion === "bajar" && posicionObjeto > 0) {
+    
+    if (objectsStack.length) {
+      const temp = objectsStack[posicionObjeto-1]; // Almacenar temporalmente el segundo elemento
+      objectsStack[posicionObjeto-1] = objectsStack[posicionObjeto]; // Colocar el tercer elemento en la posición del segundo
+      objectsStack[posicionObjeto] = temp; // Colocar el segundo elemento en la posición del tercero
+    }
+  
+  } else if (direccion === "subir" && posicionObjeto < objectsStack.length - 1) {
+    if (objectsStack.length) {
+      const temp = objectsStack[posicionObjeto]; // Almacenar temporalmente el segundo elemento
+      objectsStack[posicionObjeto] = objectsStack[posicionObjeto+1]; // Colocar el tercer elemento en la posición del segundo
+      objectsStack[posicionObjeto+1] = temp; // Colocar el segundo elemento en la posición del tercero
+    }  
+  }
+
+  actualizarLista()
+}
+
+// Evento de clic para el botón "Bajar Capa"
+document.getElementById("bajarCapa").addEventListener("click", function () {
+  actualizarPosicion("bajar");
+});
+
+// Evento de clic para el botón "Subir Capa"
+document.getElementById("subirCapa").addEventListener("click", function () {
+  actualizarPosicion("subir");
+});
+
+
+async function actualizarLista(){
+  let listado = document.querySelector("#lista")
+  const elementos = lista.querySelectorAll("li");
+
+  // Iterar sobre los elementos y eliminarlos uno por uno
+  await elementos.forEach(function(elemento) {
+    listado.removeChild(elemento);
+  });
+
+  await objectsStack.forEach(function(elemento){
+    var li = document.createElement('li');
+    li.textContent= elemento.type
+    listado.appendChild(li);
+    console.log(elemento.type)
+  })
+}

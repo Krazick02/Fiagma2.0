@@ -113,7 +113,7 @@
                                         @method('DELETE')
                                         <div class="col-6">
                                             <a href="{{ route('canva.edit', $item->id) }}"
-                                                class="btn btn-primary">Iniciar
+                                                class="btn btn-primary">Abrir
                                                 Proyecto</a>
                                         </div>
                                         <div class="col-6">
