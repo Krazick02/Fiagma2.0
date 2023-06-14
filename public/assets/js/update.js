@@ -773,7 +773,7 @@ document.addEventListener('DOMContentLoaded', function () {
               newFigure.borderOpacity = figura.borderOpacity
               newFigure.borderSize = figura.borderSize
               objectsStack.push(newFigure);
-            }else{
+            } else {
               if (figura.type === 'text') {
                 var newFigure = setText(
                   figura.texto)
@@ -781,7 +781,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 newFigure.y = figura.y
                 newFigure.color = figura.color
                 newFigure.fontSize = figura.fontSize
-                objectsStack.push(newFigure);}
+                objectsStack.push(newFigure);
+              }
             }
           }
         }
@@ -801,19 +802,19 @@ function actualizarPosicion(direccion) {
   posicionObjeto = objectsStack.indexOf(figuraTarget)
 
   if (direccion === "bajar" && posicionObjeto > 0) {
-    
+
     if (objectsStack.length) {
-      const temp = objectsStack[posicionObjeto-1]; // Almacenar temporalmente el segundo elemento
-      objectsStack[posicionObjeto-1] = objectsStack[posicionObjeto]; // Colocar el tercer elemento en la posición del segundo
+      const temp = objectsStack[posicionObjeto - 1]; // Almacenar temporalmente el segundo elemento
+      objectsStack[posicionObjeto - 1] = objectsStack[posicionObjeto]; // Colocar el tercer elemento en la posición del segundo
       objectsStack[posicionObjeto] = temp; // Colocar el segundo elemento en la posición del tercero
     }
-  
+
   } else if (direccion === "subir" && posicionObjeto < objectsStack.length - 1) {
     if (objectsStack.length) {
       const temp = objectsStack[posicionObjeto]; // Almacenar temporalmente el segundo elemento
-      objectsStack[posicionObjeto] = objectsStack[posicionObjeto+1]; // Colocar el tercer elemento en la posición del segundo
-      objectsStack[posicionObjeto+1] = temp; // Colocar el segundo elemento en la posición del tercero
-    }  
+      objectsStack[posicionObjeto] = objectsStack[posicionObjeto + 1]; // Colocar el tercer elemento en la posición del segundo
+      objectsStack[posicionObjeto + 1] = temp; // Colocar el segundo elemento en la posición del tercero
+    }
   }
 
   actualizarLista()
@@ -821,27 +822,31 @@ function actualizarPosicion(direccion) {
 
 // Evento de clic para el botón "Bajar Capa"
 document.getElementById("bajarCapa").addEventListener("click", function () {
-  actualizarPosicion("bajar");
+  if (isDraggingEnabled) {
+    actualizarPosicion("bajar");
+  }
 });
 
 // Evento de clic para el botón "Subir Capa"
 document.getElementById("subirCapa").addEventListener("click", function () {
-  actualizarPosicion("subir");
+  if (isDraggingEnabled) {
+    actualizarPosicion("subir");
+  }
 });
 
 
-async function actualizarLista(){
+async function actualizarLista() {
   let listado = document.querySelector("#lista")
   const elementos = lista.querySelectorAll("li");
 
   // Iterar sobre los elementos y eliminarlos uno por uno
-  await elementos.forEach(function(elemento) {
+  await elementos.forEach(function (elemento) {
     listado.removeChild(elemento);
   });
 
-  await objectsStack.forEach(function(elemento){
+  await objectsStack.forEach(function (elemento) {
     var li = document.createElement('li');
-    li.textContent= elemento.type
+    li.textContent = elemento.type
     listado.appendChild(li);
     console.log(elemento.type)
   })

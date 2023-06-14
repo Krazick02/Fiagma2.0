@@ -775,13 +775,18 @@ function actualizarPosicion(direccion) {
 
 // Evento de clic para el botón "Bajar Capa"
 document.getElementById("bajarCapa").addEventListener("click", function () {
-  actualizarPosicion("bajar");
+  if (isDraggingEnabled) {
+    actualizarPosicion("bajar");
+  }
 });
 
 // Evento de clic para el botón "Subir Capa"
 document.getElementById("subirCapa").addEventListener("click", function () {
-  actualizarPosicion("subir");
+  if (isDraggingEnabled) {
+    actualizarPosicion("subir");
+  }
 });
+
 
 
 async function actualizarLista(){
